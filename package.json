@@ -1,0 +1,23 @@
+{
+  "name": "systemmonitorlinux",
+  "version": "1.0.0",
+  "description": "Monitor System for Resources from S.O Linux Mint 19",
+  "main": "index.js",
+  "scripts": {
+    "start":"nodejs index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skrillfer/SystemMonitorLinux.git"
+  },
+  "author": "Luis Fernando Ramirez Santos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skrillfer/SystemMonitorLinux/issues"
+  },
+  "homepage": "https://github.com/skrillfer/SystemMonitorLinux#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
