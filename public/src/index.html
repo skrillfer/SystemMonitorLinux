@@ -1,0 +1,164 @@
+<html>
+    <head>
+       
+        <!--Dynamic Chart-->
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+        <!-- Boostrap    -->
+        <script src="/src/JS/jquery-3.3.1.slim.min.js" ></script>
+        <script src="/src/JS/popper.min.js" ></script>
+        <link rel="stylesheet" href="/src/CSS/bootstrap.min.css" >
+        <script src="/src/JS/bootstrap.min.js" ></script>
+        
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src ="/javascript/client.js"></script>
+        <script src ="/javascript/plot.js"></script>
+        
+
+        <title>
+            Home
+        </title>
+    </head>
+    <body onload="loadProcess()">
+        <div class="container">
+        <center><strong><h2>Administrador de Recursos del CPU</h2></strong></center>
+        
+        <!-- Nav tabs -->
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#home">Lista Procesos</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#monitorCPU">Monitor CPU</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#monitorRAM">Monitor RAM</a>
+            </li>
+        </ul>
+        
+        <!-- Tab panes -->
+        <div class="tab-content" id="_TAB_CONTENT_">
+            <div class="tab-pane container fade" id="home">
+                    <hr/>
+                    <h3 >Informacion General del Sistema</h3>
+                    <div class="row" style="background-color:greenyellow">
+                        <div class="col-sm">
+                            <label id="TotalProcess"><strong>Numero Total de Procesos:</strong></label>
+                        </div>
+                        <div class="col-sm">
+                            <label id="outTotalProcess"></label>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color:greenyellow">
+                        <div class="col-sm">
+                            <label id="RunProcess"><strong>Procesos en Ejecucion</strong></label>
+                        </div>
+                        <div class="col-sm">
+                            <label id="outRunProcess"></label>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color:greenyellow">
+                        <div class="col-sm">
+                            <label id="SuspendProcess"><strong>Procesos Suspendidos</strong></label>
+                        </div>    
+                        <div class="col-sm">
+                            <label id="outSuspendProcess"></label>
+                        </div>    
+                    </div>
+                    <div class="row" style="background-color:greenyellow">
+                        <div class="col-sm">
+                            <label id="StopProcess"><strong>Procesos Detenidos</strong> </label>
+                        </div>
+                        <div class="col-sm">
+                            <label id="outStopProcess"></label>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color:greenyellow">
+                        <div class="col-sm">
+                            <label id="ZombieProcess"><strong>Procesos Zombie</strong> </label>
+                        </div>
+                        <div class="col-sm">
+                            <label id="outZombieProcess"></label>
+                        </div>
+                    </div>
+                    
+                    <hr/>
+                    <h3>Todos Los Procesos</h3>
+                    <div class="input-group col-md-4">
+                            <input  onkeyup="search_inTable()"  type="search" value="" id="_search_input" placeholder="buscar proceso">
+                            
+                    </div>
+                <hr/>
+                    <table class="table" id="tableProcess">
+                            
+                            <thead class="thead-dark">
+                              <tr>
+                                <th>Pid</th>
+                                <th>Nombre</th>
+                                <th>Usuario</th>
+                                <th>Status</th>
+                                <th>RAM %</th>
+                                <th>Kill Process</th>
+                              </tr>
+                            </thead>
+                            <tbody id="bodyListProcess">
+
+                            </tbody>
+                    </table>        
+            </div>
+            <div class="tab-pane container fade" name= "monitorCPU" id="monitorCPU">
+                    <hr/>
+                    <div  class="row">
+                        <div id="chartCPU1Container" style="height: 250px; width: 90%;"></div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-sm">
+                            <button type="button"  class="btn btn-success">CPU 1 :</button>
+                            <label id="cpu1_info"></label>
+        
+                        </div>
+                        <div class="col-sm">
+                            <button type="button"  class="btn btn-danger">CPU 2 :</button>
+                            <label id="cpu2_info"></label>
+        
+                        </div>
+                        <div class="col-sm">
+                            <button type="button"  class="btn btn-warning">CPU 3:</button>
+                            <label id="cpu3_info"></label>
+        
+                        </div>
+                        <div class="col-sm">
+                            <button type="button"  class="btn btn-info">CPU 4:</button>
+                            <label id="cpu4_info"></label>
+                        </div>
+                    </div>
+                    
+            </div>
+            <div class="tab-pane container active" name="monitorRAM" id="monitorRAM">
+                <!--Pie Usage RAM-->
+                <hr/>
+                <div class="row">
+                        <div id="chartRAMContainer" style="height: 250px; width: 90%;"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                            <button type="button"  class="btn btn-success">Libre(MB):</button>
+                            <label id="SizeFree_RAM"></label>
+                    </div>
+                    <div class="col-sm">
+                            <button type="button"  class="btn btn-danger">Ocupado(MB):</button>
+                            <label id="SizeOcupado_RAM"></label>
+                    </div>
+                    <div class="col-sm">
+                        <button type="button"  class="btn btn-warning">Porcentaje Uso:</button>
+                        <label id="percentageUsage_RAM"></label>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        </div>
+    </body>
+</html>
