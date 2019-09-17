@@ -1,4 +1,5 @@
 const fs = require('fs');
+const exec = require('child_process').exec;
 
 var express = require('express');
 var app = express();
@@ -20,7 +21,9 @@ server.listen(3000, function() {
 
 io.on('connection', function(socket) {
     //socket.emit('messages', messages);
-  
+    socket.on('killingProcess', function(data) {
+      killProcess(data.id);
+    });
     /*socket.on('getAllProcess', function(data) {
       var arr_Path = getAllProcess("/proc");
       var arr_ProcessSend = [];
@@ -32,26 +35,12 @@ io.on('connection', function(socket) {
       io.sockets.emit('ReceivingProcess', {'process':arr_ProcessSend});
     });
   
-    socket.on('killingProcess', function(data) {
-      killProcess(data.id);
-    });
-  
-    socket.on('saveLogin', function(data) {
-      login=true;
-    });
-  
-    socket.on('quitLogin', function(data) {
-      login=false;
-    });
-  
-    socket.on('getLogin', function(data) {
-      io.sockets.emit('ReceivingLogin', {'login':login});
-    });*/
+    */
   
   });
 
   /* = ==============================MEM INFO======================================= = */
-fs.watchFile('/proc/memo_201213562', { recursive: true }, function(evt, name) {
+fs.watchFile('/proc/memoria_201213562', { recursive: true }, function(evt, name) {
     try {
         io.sockets.emit('meminfo_change', Meminfo());
         //console.log();
@@ -62,7 +51,7 @@ fs.watchFile('/proc/memo_201213562', { recursive: true }, function(evt, name) {
 
 function Meminfo() {
     var info = {};
-    var data = fs.readFileSync('/proc/memo_201213562').toString();
+    var data = fs.readFileSync('/proc/memoria_201213562').toString();
     try {
         info=JSON.parse(data);
     } catch (error) {
@@ -70,4 +59,40 @@ function Meminfo() {
     }
     
     return info;
+}
+  /* = ==============================PROCESS INFO======================================= = */
+  fs.watchFile('/proc/procesos_201213562', { recursive: true }, function(evt, name) {
+    try {
+        io.sockets.emit('ReceivingProcess', Processinfo());
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+function Processinfo() {
+    var info = {};
+    var data = fs.readFileSync('/proc/procesos_201213562').toString();
+    try {
+        info=JSON.parse(data);
+    } catch (error) {
+        console.log('error al pasear json, process info');
+    }
+    return info;
+}
+
+function killProcess(id)
+{
+  console.log(id);
+  try {
+    const child = exec('kill -9 '+id,
+            (error, stdout, stderr) => {
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+                if (error !== null) {
+                    console.log(`exec error: ${error}`);
+                }
+      });
+  } catch (error) {
+    console.log('error kill process:'+error); 
+  }
 }

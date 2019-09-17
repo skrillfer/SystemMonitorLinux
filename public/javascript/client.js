@@ -15,7 +15,7 @@ socket.on('statinfo_change', function(data) {
 });
 
 socket.on('ReceivingProcess', function(data) {
-        paintInfoProcess(data.process);
+        paintInfoProcess(data.lista);
 });
 
 

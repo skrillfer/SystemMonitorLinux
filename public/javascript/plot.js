@@ -194,7 +194,7 @@ function plot_performanceCPU(data)
 
 function loadProcess()
 {
-    socket.emit('getLogin', {});
+    
     socket.emit('getAllProcess', {});
 }
 
@@ -206,13 +206,13 @@ function paintInfoProcess(data)
     data.forEach(
         item =>{
 
-                var html = '<tr id="'+item.Pid+'">';
-                html+='<td>'+item.Pid+'</td>';
-                html+='<td>'+item.Name+'</td>';
-                html+='<td id="uid_'+item.Pid+'">'+item.Uid+'</td>';
-                html+='<td id="state_'+item.Pid+'">'+item.State+'</td>';
-                html+='<td id="percentage_'+item.Pid+'">'+processPercentageRAM(item.VmRSS)+'</td>';
-                html+='<td><button type="button" onClick="killProcess(this.id)" id="'+item.Pid+'" class="btn btn-danger">Eliminar</button></td>';
+                var html = '<tr id="'+item.PID+'">';
+                html+='<td>'+item.PID+'</td>';
+                html+='<td>'+item.NAME+'</td>';
+                html+='<td id="uid_'+item.PID+'">'+item.USER+'</td>';
+                html+='<td id="state_'+item.PID+'">'+item.STATUS+'</td>';
+                html+='<td id="percentage_'+item.PID+'">'+processPercentageRAM(item.MEM)+'</td>';
+                html+='<td><button type="button" onClick="killProcess(this.id)" id="'+item.PID+'" class="btn btn-danger">Eliminar</button></td>';
                 html+='</tr>';
                 document.getElementById("bodyListProcess").innerHTML+=html;
             }
