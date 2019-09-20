@@ -118,15 +118,26 @@ function PlotRAM_Graph(dataX,MemTotal,MemFree)
 
 function UpdateAllProcess(Ocupado)
 {
+    console.log('actualizando procesos');
+    var json_data = [];   
     AllProcess.forEach(item=>{
         try {
-            document.getElementById("percentage_"+item.Pid).textContent = processPercentageRAM(item.VmRSS);
-            document.getElementById("state_"+item.Pid).textContent = item.State;
-            document.getElementById("uid_"+item.Pid).textContent = item.Uid;    
+            json_data.push({id:item.PID,parent:item.PARENT,text:item.NAME}); 
+            document.getElementById("percentage_"+item.PID).textContent = processPercentageRAM(item.MEM);
+            document.getElementById("state_"+item.PID).textContent = item.STATUS;
+            document.getElementById("uid_"+item.PID).textContent = item.USER;    
         } catch (error) {
         }
         
     });  
+    
+    try {
+        /*$('#jstree_demo_div').jstree({ 'core' : {
+            'data' : json_data
+        } });*/
+    } catch (error) {
+        console.log('error:'+error);
+    }
     search_inTable();  
 }
 
@@ -198,14 +209,25 @@ function loadProcess()
     socket.emit('getAllProcess', {});
 }
 
+function getChildrenJsonTree(parent){
+    var children=[];
+    AllProcess.forEach(
+        item=>{
+            if(item.PARENT==parent){
+                children.push({id:item.PID,text:item.NAME});
+            }
+        }
+    );
+    return children;
+}
 
 function paintInfoProcess(data)
-{   
+{   var json_data=[];
     AllProcess = data;
     document.getElementById("bodyListProcess").innerHTML='';
     data.forEach(
         item =>{
-
+                json_data.push({id:item.PID,text:item.NAME,children:getChildrenJsonTree(item.NAME)}); 
                 var html = '<tr id="'+item.PID+'">';
                 html+='<td>'+item.PID+'</td>';
                 html+='<td>'+item.NAME+'</td>';
@@ -217,6 +239,14 @@ function paintInfoProcess(data)
                 document.getElementById("bodyListProcess").innerHTML+=html;
             }
     );
+    try {
+        $("#jstree_demo_div").jstree({ 'core' : {
+            "check_callback": true,
+            'data' : json_data
+        } });
+    } catch (error) {
+        console.log('error:'+error);
+    }
     search_inTable();
 }
 
@@ -297,7 +327,12 @@ function search_inTable()
     }
 }
 
-function force_Search()
+function paintInfoSummary(data)
 {
+    document.getElementById("outTotalProcess").textContent=data.total;
+    document.getElementById("outRunProcess").textContent=data.running;
+    document.getElementById("outSuspendProcess").textContent=data.sleep;
+    document.getElementById("outStopProcess").textContent=data.stopped;
+    document.getElementById("outZombieProcess").textContent=data.zombie;
     
 }

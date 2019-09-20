@@ -14,11 +14,15 @@ socket.on('statinfo_change', function(data) {
         plot_performanceCPU(data);
 });
 
-socket.on('ReceivingProcess', function(data) {
+socket.on('ProcessInfo', function(data) {
         paintInfoProcess(data.lista);
 });
 
 
+socket.on('ReceivingProcess', function(data) {
+        //paintInfoProcess(data.process);
+        
+});
 
 socket.on('summary', function(data) {
         paintInfoSummary(data);
